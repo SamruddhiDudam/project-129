@@ -1,14 +1,25 @@
 song1 = "";
+
 song2 = "";
+
 left_wrist_x =  0;
+
 left_wrist_y =  0;
+
 right_wrist_x = 0;
+
 right_wrist_y = 0;
+
 scoreRightWrist = 0;
+
 scoreLeftWrist = 0;
 
-function loadSound() {
+song1_status = "";
 
+song2_status = "";
+
+function loadSound(){
+    
 }
 
 function preload() {
@@ -36,26 +47,6 @@ function modelLoaded() {
 
 
 
-function draw() {
-    image(video, 0, 0, 600, 500);
-    fill("#000000");
-    fill("black");
-    stroke("black");
-    rect(680, 0, 20, 700);
-    console.log(scoreRightWrist);
-    if (scoreRightWrist > 0.2) {
-      fill("red");
-      stroke("red");
-      circle(right_wrist_X, right_wrist_Y, 30);
-    }
-      fill("black");
-      stroke("black");
-      rect(0, 0, 20, 700);
-  
-  
-  
-  
-}
 
 function gotPoses(results) {
     if(results.length > 0)
@@ -65,12 +56,55 @@ function gotPoses(results) {
         console.log("scoreRightWrist = " + scoreRightWrist + " scoreLeftWrist = " + scoreLeftWrist);
 
      console.log(results);
-     left_wrist_x = results[0].pose.left_wrist.x;
-     left_wristy = results[0].pose.left_wrist.y;
+     left_wrist_x = results[0].pose.leftWrist.x;
+     left_wrist_y = results[0].pose.leftWrist.y;
      console.log("left_wristx =" + left_wristx +"left_wrist_y =" + leftWrist_y);
 
-     rightWristX = results[0].pose.rightWrist.x;
-     rightWristY = results[0].pose.rightWrist.y;
+     right_wristX = results[0].pose.rightWrist.x;
+     right_wristY = results[0].pose.rightWrist.y;
      console.log("right_wrist_x ="+ right_wrist_x +"right_wrist_y =" + right_wrist_y);
     }
+}
+
+
+function draw() {
+    image(video, 0, 0, 600, 500);
+
+    song1_status = song1.isPlaying();
+    song1_status = song2.isPlaying();
+
+    fill("#000000");
+    stroke("#000000");
+   
+    if (scoreRightWrist > 0.2) {
+      circle(right_wrist_X, right_wrist_Y, 30);
+
+      song2.stop();
+
+     if (song1_status == false)
+     {
+         song1.play();
+         document.getElementById("song_name").innerHTML = "Playing - Harry Potter Theme Song"
+     } 
+    }
+      
+    if (scoreLeftWrist > 0.2) {
+        circle(left_wrist_X, left_wrist_Y, 30);
+  
+        song1.stop();
+  
+       if (song2_status == false)
+       {
+           song2.play();
+           document.getElementById("song_name").innerHTML = "Playing - Peter Pan Song"
+       } 
+      }
+  
+  
+}
+
+function play() {
+    song.play();
+    song.setVolume(1);
+    song.rate(2.5);
 }
